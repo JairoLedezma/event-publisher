@@ -37,31 +37,31 @@ pipeline {
        //     }
        //}
         
-       stage ('Deploy Kieserver') {
-            steps {
-                script {
-                    openshift.withCluster( CLUSTER_NAME ) {
-                        openshift.withProject( PROJECT_NAME ){
-                            def processedTemplate
-                            
-                            // Creation of kie-server
-                            // 
-                            if( NEW_PROJECT ){
-                                 try {
-                                    processedTemplate = openshift.process( "-f", "./template/template-create.yaml", "--param-file=./template/template-create.env")
-                                    def createResources = openshift.create( processedTemplate )
-                                    createResources.logs('-f')
-                                    
-                                 } catch (err) {
-                                    echo err.getMessage()
-                                }
-                            } 
-                          
-                        }
-                    }
-                }
-            }
-        }
+       // stage ('Deploy Kieserver') {
+       //     steps {
+       //         script {
+       //             openshift.withCluster( CLUSTER_NAME ) {
+       //                 openshift.withProject( PROJECT_NAME ){
+       //                     def processedTemplate
+       //                     
+       //                     // Creation of kie-server
+       //                     // 
+       //                     if( NEW_PROJECT ){
+       //                          try {
+       //                             processedTemplate = openshift.process( "-f", "./template/template-create.yaml", "--param-file=./template/template-create.env")
+       //                             def createResources = openshift.create( processedTemplate )
+       //                             createResources.logs('-f')
+       //                             
+       //                          } catch (err) {
+       //                             echo err.getMessage()
+       //                         }
+       //                     } 
+       //                   
+       //                 }
+       //             }
+       //         }
+       //     }
+       // }
         
         stage ('Create PAM environment') {
             steps {
