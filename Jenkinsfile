@@ -23,23 +23,20 @@ pipeline {
         }
         stage ('Maven Build') {
             steps {
-                rtMavenRun (
-                    tool: "maven-3.6.3",
-                    pom: 'pom.xml',
-                    goals: '-s settings.xml clean install',
-                    deployerId: "MAVEN_DEPLOYER"
-                )
+                withMaven{
+                    sh "mvn clean install"
             }
         }
-        stage ('Running Unit Tests') {
-            steps {
-                rtMavenRun (
-                    tool: "maven-3.6.3",
-                    pom: 'pom.xml',
-                    goals: '-s settings.xml test'
-                )
-            }
-        }
+       //
+       // stage ('Running Unit Tests') {
+       //    steps {
+       //         rtMavenRun (
+       //             tool: "maven-3.6.3",
+       //            pom: 'pom.xml',
+       //             goals: '-s settings.xml test'
+       //         )
+       //     }
+       //}
         
        stage ('Create & Replace Configurations') {
             steps {
