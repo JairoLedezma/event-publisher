@@ -27,6 +27,7 @@ pipeline {
                     sh "mvn clean install"
             }
         }
+        }
        //
        // stage ('Running Unit Tests') {
        //    steps {
