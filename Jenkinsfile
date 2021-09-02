@@ -36,7 +36,39 @@ pipeline {
        //         )
        //     }
        //}
-        
+        stage ('Create & Replace Configurations') {
+            steps {
+                script {
+                    openshift.withCluster( CLUSTER_NAME ) {
+                        openshift.withProject( PROJECT_NAME ){
+                            def processedTemplate
+                            
+                            // if the new_project box is checked then a fresh install of the necessary files is ran
+                            // otherwise, you could change the files in template-replace and then run it again to update
+                            if( NEW_PROJECT ){
+                                 try {
+                                    processedTemplate = openshift.process( "-f", "./templates/template-create.yaml", "--param-file=./templates/template-create.env")
+                                    def createResources = openshift.create( processedTemplate )
+                                    createResources.logs('-f')
+                                 } catch (err) {
+                                    echo err.getMessage()
+                                }
+                            } else{
+                                try {
+                                    processedTemplate = openshift.process( "-f", "./templates/template-replace.yaml", "--param-file=./templates/template-replace.env")
+                                    def replaceResources = openshift.replace( processedTemplate )
+                                    replaceResources.logs('-f')
+                                 } catch (err) {
+                                    echo err.getMessage()
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+        /*
         stage ('Deploy Kieserver') {
             steps {
                 script {
@@ -62,7 +94,7 @@ pipeline {
                 }
            }
         }
-        
+        */
         stage ('Create PAM environment') {
             steps {
                 script {
