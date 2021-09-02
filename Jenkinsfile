@@ -27,7 +27,7 @@ pipeline {
             }
         }
      
-        /*
+        
         stage ('Deploy Kieserver') {
             steps {
                 script {
@@ -53,7 +53,7 @@ pipeline {
                 }
            }
         }
-        */
+        
         stage ('Create PAM environment') {
             steps {
                 script {
