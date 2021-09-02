@@ -139,7 +139,7 @@ parameters:
   - displayName: KIE Server Keystore Password
     description: The password for the keystore and certificate.
     name: KIE_SERVER_HTTPS_PASSWORD
-    value: mykeystorepass
+    value: password
     required: false
   - displayName: KIE Server bypass auth user.
     description: Allows the KIE Server to bypass the authenticated user for task-related operations, for example, queries. (Sets the org.kie.server.bypass.auth.user system property)
