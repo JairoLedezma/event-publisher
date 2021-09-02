@@ -47,7 +47,7 @@ pipeline {
                             // otherwise, you could change the files in template-replace and then run it again to update
                             if( NEW_PROJECT ){
                                  try {
-                                    processedTemplate = openshift.process( "-f", "./templates/template-create.yaml", "--param-file=./templates/template-create.env")
+                                    processedTemplate = openshift.process( "-f", "./template/template-create.yaml", "--param-file=./template/template-create.env")
                                     def createResources = openshift.create( processedTemplate )
                                     createResources.logs('-f')
                                  } catch (err) {
@@ -55,7 +55,7 @@ pipeline {
                                 }
                             } else{
                                 try {
-                                    processedTemplate = openshift.process( "-f", "./templates/template-replace.yaml", "--param-file=./templates/template-replace.env")
+                                    processedTemplate = openshift.process( "-f", "./template/template-replace.yaml", "--param-file=./template/template-replace.env")
                                     def replaceResources = openshift.replace( processedTemplate )
                                     replaceResources.logs('-f')
                                  } catch (err) {
