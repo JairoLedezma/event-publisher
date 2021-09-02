@@ -35,8 +35,7 @@ pipeline {
                         openshift.withProject( PROJECT_NAME ){
                             def processedTemplate
                             
-                            // Creation of kie-server
-                            // 
+                           
                            if( NEW_PROJECT ){
                                  try {
                                     processedTemplate = openshift.process( "-f", "./template/template-create.yaml", "--param-file=./template/template-create.env")
@@ -54,32 +53,6 @@ pipeline {
            }
         }
         
-        stage ('Create PAM environment') {
-            steps {
-                script {
-                    openshift.withCluster( CLUSTER_NAME ) {
-                        openshift.withProject( PROJECT_NAME ){
-                            def processedTemplate
-                            
-                            // if the new_project box is checked then a fresh install of the necessary files is ran
-                            // otherwise, you could change the files in template-replace and then run it again to update
-                            if( NEW_PROJECT ){
-                                 try {
-                                    processedTemplate = openshift.process( "-f", "./template/rhpam711-prod.yaml", "--param-file=./template/template-replace.env")
-                                    def createResources = openshift.create( processedTemplate )
-                                    createResources.logs('-f')     
-                                 } catch (err) {
-                                    echo err.getMessage()
-                                }
-                            } 
-                          
-                        }
-                    }
-                }
-            }
-        }
-    
-         
         stage ('Uploading Artifacts to Artifactory') {
             steps {
                 rtPublishBuildInfo (
