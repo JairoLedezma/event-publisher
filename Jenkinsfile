@@ -37,18 +37,18 @@ pipeline {
        //     }
        //}
         
-       stage ('Create & Replace Configurations') {
+       stage ('Deploy Kieserver') {
             steps {
                 script {
                     openshift.withCluster( CLUSTER_NAME ) {
                         openshift.withProject( PROJECT_NAME ){
                             def processedTemplate
                             
-                            // if the new_project box is checked then a fresh install of the necessary files is ran
-                            // otherwise, you could change the files in template-replace and then run it again to update
+                            // Creation of kie-server
+                            // 
                             if( NEW_PROJECT ){
                                  try {
-                                    processedTemplate = openshift.process( "-f", "./templates/template-create.yaml", "--param-file=./templates/template-create.env")
+                                    processedTemplate = openshift.process( "-f", "./template/template-create.yaml", "--param-file=./template/template-create.env")
                                     def createResources = openshift.create( processedTemplate )
                                     createResources.logs('-f')
                                     
@@ -74,7 +74,7 @@ pipeline {
                             // otherwise, you could change the files in template-replace and then run it again to update
                             if( NEW_PROJECT ){
                                  try {
-                                    processedTemplate = openshift.process( "-f", "./templates/rhpam711-prod.yaml", "--param-file=./templates/template-create.env")
+                                    processedTemplate = openshift.process( "-f", "./template/rhpam711-prod.yaml", "--param-file=./template/template-create.env")
                                     def createResources = openshift.create( processedTemplate )
                                     createResources.logs('-f')     
                                  } catch (err) {
